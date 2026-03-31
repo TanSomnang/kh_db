@@ -1,0 +1,12 @@
+CREATE OR REPLACE FUNCTION cas.square_number(p_input_value INTEGER) RETURNS INTEGER
+AS $$
+DECLARE
+    v_result INTEGER;
+BEGIN
+    -- Calculate the square of the input value
+    v_result := p_input_value * p_input_value;
+
+    -- Return the result
+    RETURN v_result;
+END;
+$$ LANGUAGE plpgsql;
