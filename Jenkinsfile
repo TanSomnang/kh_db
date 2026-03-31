@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'ENV', choices: ['dev', 'test', 'prod'], description: 'Select environment')
+        choice(name: 'ENV', choices: ['khcassit01', 'khcassit02', 'khcassit03', 'khcasdev01', 'khcasdev02', 'khcasdev03'], description: 'Select environment')
     }
 
     environment {
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://your.git.repo/postgres-deployment.git'
+                git branch: 'main', url: 'https://github.com/TanSomnang/kh_db.git'
             }
         }
 
