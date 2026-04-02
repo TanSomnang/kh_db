@@ -52,10 +52,10 @@ pipeline {
                             echo "Executing ${scriptPath}"
                             def status = sh(
                                 script: """
-                                    PGPASSWORD="$DB_PASS" \
-                                    psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U "$DB_USER" -d ${env.DB_NAME} -f cas/${scriptPath}
+                                    export PGPASSWORD='${DB_PASS}'
+                                    psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U '${DB_USER}' -d ${env.DB_NAME} -f cas/${scriptPath}
                                 """,
-                                returnStdout: true
+                                returnStatus: true
                             )
                             if (status != 0) {
                                 error "Execution failed for ${scriptPath} (exit code ${status})"
