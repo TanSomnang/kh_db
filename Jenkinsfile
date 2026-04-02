@@ -47,9 +47,19 @@ pipeline {
                 script {
                     runbookLines.each { scriptPath ->
                         echo "Executing ${scriptPath}"
-                        sh """
-                        PGPASSWORD=${env.DB_PASS} psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U ${env.DB_USER} -d ${env.DB_NAME} -f cas/${scriptPath}
-                        """
+                        withEnv(["PGPASSWORD=${env.DB_PASS}"]) {
+                            def status = sh(
+                                script: "psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U ${env.DB_USER} -d ${env.DB_NAME} -f cas/${scriptPath}",
+                                returnStatus: true
+                            )
+                            if (status != 0) {
+                                error "Execution failed for ${scriptPath} (exit code ${status})"
+                            }
+                        }
+
+                        // sh """
+                        // PGPASSWORD=${env.DB_PASS} psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U ${env.DB_USER} -d ${env.DB_NAME} -f cas/${scriptPath}
+                        // """
                     }
                 }
             }
