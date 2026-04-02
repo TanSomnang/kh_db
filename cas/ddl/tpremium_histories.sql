@@ -1,6 +1,6 @@
--- Table: public.tpremium_histories
+-- Table: cas.tpremium_histories
 
--- DROP TABLE IF EXISTS public.tpremium_histories;
+-- DROP TABLE IF EXISTS cas.tpremium_histories;
 
 CREATE TABLE IF NOT EXISTS cas.tpremium_histories
 (
@@ -13,15 +13,15 @@ CREATE TABLE IF NOT EXISTS cas.tpremium_histories
     change_reason VARCHAR(255),
     
     -- Ensure the premium change is valid (e.g., cannot change from a negative)
-    CONSTRAINT check_positive_amount CHECK (new_premium_amount >= 0),
+    CONSTRAINT check_positive_amount CHECK (new_premium_amount >= 0)
     
     -- Example Foreign Key to a hypothetical policy table
-    -- CONSTRAINT fk_policy FOREIGN KEY(policy_id) REFERENCES public.tpolicies(policy_id)
+    -- CONSTRAINT fk_policy FOREIGN KEY(policy_id) REFERENCES cas.tpolicies(policy_id)
 );
 
 -- Index for faster lookup of history by policy
 CREATE INDEX IF NOT EXISTS idx_premium_histories_policy_id 
-ON public.tpremium_histories(policy_id);
+ON cas.tpremium_histories(policy_id);
 
 -- Comment on table
-COMMENT ON TABLE public.tpremium_histories IS 'Stores historical records of premium changes for policies.';
+COMMENT ON TABLE cas.tpremium_histories IS 'Stores historical records of premium changes for policies.';
