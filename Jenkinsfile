@@ -1,3 +1,5 @@
+def runbookLines = []
+
 pipeline {
     agent any
 
@@ -36,7 +38,7 @@ pipeline {
             steps {
                 script {
                     def runbookFile = "cas/runbook/${env.RUNBOOK}"
-                    def runbookLines = readFile(runbookFile).split("\n").findAll { line -> line.trim() && !line.startsWith("#") }
+                    runbookLines = readFile(runbookFile).split("\n").findAll { line -> line.trim() && !line.startsWith("#") }
                     echo "Scripts to execute: ${runbookLines}"
                 }
             }
