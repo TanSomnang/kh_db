@@ -51,7 +51,8 @@ pipeline {
                         runbookLines.each { scriptPath ->
                             echo "Executing ${scriptPath}"
                             def status = sh(
-                                script: "psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U ${DB_USER} -d ${env.DB_NAME} -f cas/${scriptPath}",
+                                export PGPASSWORD='${DB_PASS}'
+                                script: "psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U '${DB_USER}' -d ${env.DB_NAME} -f cas/${scriptPath}",
                                 returnStatus: true,
                                 returnStdout: true
                             )
