@@ -1,3 +1,6 @@
+delete from cas.tclient_details where pol_num = '8000000003';
+delete from cas.tpolicys where pol_num = '8000000003';
+
 insert into cas.tclient_details (cli_num,pol_num,cli_nm,cli_id ) 
 values ('000003', '8000000003', 'Testing C', '15000003');
 
