@@ -28,7 +28,6 @@ pipeline {
                     env.DB_PORT   = props['DB_PORT']
                     env.DB_NAME   = props['DB_NAME']
                     env.RUNBOOK   = props['RUNBOOK']
-                    env.CRED_ID   = props['JENKINS_CREDENTIAL_ID']
                 }
             }
         }
@@ -37,7 +36,6 @@ pipeline {
             steps {
                 script {
                     def runbookFile = "cas/runbook/${env.RUNBOOK}"
-                    def runbookLines = []
                     runbookLines = readFile(runbookFile).split("\n").findAll { line -> line.trim() && !line.startsWith("#") }
                     echo "Scripts to execute: ${runbookLines}"
                 }
@@ -46,7 +44,7 @@ pipeline {
 
         stage('Deploy Scripts') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "${env.CRED_ID}", usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: "${params.ENV}", usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
                     script {
                         runbookLines.each { scriptPath ->
                             echo "Executing ${scriptPath}"
