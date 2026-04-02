@@ -51,10 +51,11 @@ pipeline {
                         runbookLines.each { scriptPath ->
                             echo "Executing ${scriptPath}"
                             def status = sh(
-                                export PGPASSWORD='${DB_PASS}'
-                                script: "psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U '${DB_USER}' -d ${env.DB_NAME} -f cas/${scriptPath}",
-                                returnStatus: true,
-                                returnStdout: true
+                                script: """
+                                    export PGPASSWORD='${DB_PASS}'
+                                    psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U '${DB_USER}' -d ${env.DB_NAME} -f cas/${scriptPath}
+                                """,
+                                returnStatus: true
                             )
                             if (status != 0) {
                                 error "Execution failed for ${scriptPath} (exit code ${status})"
