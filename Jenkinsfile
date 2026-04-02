@@ -37,9 +37,8 @@ pipeline {
             steps {
                 script {
                     def runbookFile = "cas/runbook/${env.RUNBOOK}"
-                    def runbookLines = readFile(runbookFile)
-                        .split("\n")
-                        .findAll { line -> line.trim() && !line.startsWith("#") }
+                    def runbookLines = []
+                    runbookLines = readFile(runbookFile).split("\n").findAll { line -> line.trim() && !line.startsWith("#") }
                     echo "Scripts to execute: ${runbookLines}"
                 }
             }
@@ -53,8 +52,7 @@ pipeline {
                             echo "Executing ${scriptPath}"
                             def status = sh(
                                 script: "psql -h ${env.DB_HOST} -p ${env.DB_PORT} -U ${DB_USER} -d ${env.DB_NAME} -f cas/${scriptPath}",
-                                returnStatus: true,
-                                quiet: true
+                                returnStatus: true
                             )
                             if (status != 0) {
                                 error "Execution failed for ${scriptPath} (exit code ${status})"
